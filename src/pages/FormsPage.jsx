@@ -1,59 +1,50 @@
+
+import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function FormsPage () {
-  const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState([]);
+function FormsPage() {
+  const navigate = useNavigate(); 
 
-  const handleTaskChange = (event) => {
-    setTask(event.target.value);
-  };
+  const [userId, setUserId] = useState('');
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
-  const handleAddTask = () => {
-    if (task.trim() !== '') {
-      setTasks([...tasks, task]);
-      setTask('');
-    }
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    axios.post('https://dummyjson.com/posts', {
+        title: title,
+        body: body,
+        userId: userId
+      });
 
-  const handleDeleteTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
-  };
+      navigate('/posts');
+    } 
+
 
   return (
-    <div className="App-todo-list">
-      <h1>Create a new post</h1>
-      <div>
-        <input
-          type="text"
-          value={task}
-          onChange={handleTaskChange}
-          placeholder="New post"
-        />
-        <button onClick={handleAddTask}>Add</button>
-      </div>
-      <ul className='form-list' >
-        {tasks.map((task, index) => (
-          <li key={index}>
-            <span
-              style={{
-                textDecoration: task.startsWith('~') && task.endsWith('~') ? 'line-through' : 'none',
-              }}
-            >
-              {task.replace(/~/g, '')}
-            </span>
-              <span className='change_buttons'>
-                <button className='change__btn' onClick={() => handleDeleteTask(index)}>Delete</button>
-              </span>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <h2>Create a New Post</h2>
+      <form onSubmit={handleSubmit}>
+      <div className='post-form'>
+          <label>User ID: </label>
+          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
+        </div>
+        <div className='post-form'>
+          <label>Title: </label>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </div>
+        <div className='post-form'>
+          <label>Body: </label>
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} />
+        </div>
+        <button className='post-submit-btn' type="submit">Create Post</button>
+      </form>
     </div>
-    
   );
 }
 
 export default FormsPage;
+
 
 

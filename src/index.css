@@ -90,6 +90,18 @@ footer {
   background-color: rgba(54, 214, 182, 0.182);
 }
 
+.post-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.post-submit-btn {
+  margin: 10px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
